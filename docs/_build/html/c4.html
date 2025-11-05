@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>c4 module &mdash; MCTS-NC 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=292eb321"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="game_runner module" href="game_runner.html" />
+    <link rel="prev" title="src" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MCTS-NC
+          </a>
+              <div class="version">
+                1.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">c4 module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#c4.C4"><code class="docutils literal notranslate"><span class="pre">C4</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.M"><code class="docutils literal notranslate"><span class="pre">C4.M</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.N"><code class="docutils literal notranslate"><span class="pre">C4.N</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.SYMBOLS"><code class="docutils literal notranslate"><span class="pre">C4.SYMBOLS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.__init__"><code class="docutils literal notranslate"><span class="pre">C4.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.class_repr"><code class="docutils literal notranslate"><span class="pre">C4.class_repr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.__str__"><code class="docutils literal notranslate"><span class="pre">C4.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.take_action_job"><code class="docutils literal notranslate"><span class="pre">C4.take_action_job()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.compute_outcome_job"><code class="docutils literal notranslate"><span class="pre">C4.compute_outcome_job()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.compute_outcome_job_numba_jit"><code class="docutils literal notranslate"><span class="pre">C4.compute_outcome_job_numba_jit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.take_random_action_playout"><code class="docutils literal notranslate"><span class="pre">C4.take_random_action_playout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.get_board"><code class="docutils literal notranslate"><span class="pre">C4.get_board()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.get_extra_info"><code class="docutils literal notranslate"><span class="pre">C4.get_extra_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.action_name_to_index"><code class="docutils literal notranslate"><span class="pre">C4.action_name_to_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.action_index_to_name"><code class="docutils literal notranslate"><span class="pre">C4.action_index_to_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.get_board_shape"><code class="docutils literal notranslate"><span class="pre">C4.get_board_shape()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.__module__"><code class="docutils literal notranslate"><span class="pre">C4.__module__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.get_extra_info_memory"><code class="docutils literal notranslate"><span class="pre">C4.get_extra_info_memory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c4.C4.get_max_actions"><code class="docutils literal notranslate"><span class="pre">C4.get_max_actions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="game_runner.html">game_runner module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gomoku.html">gomoku module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mcts.html">mcts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mctsnc.html">mctsnc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mctsnc_game_mechanics.html">mctsnc_game_mechanics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plots.html">plots module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MCTS-NC</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">src</a></li>
+      <li class="breadcrumb-item active">c4 module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/c4.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-c4">
+<span id="c4-module"></span><h1>c4 module<a class="headerlink" href="#module-c4" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="c4.C4">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">c4.</span></span><span class="sig-name descname"><span class="pre">C4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="mcts.html#mcts.State" title="mcts.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a></p>
+<p>Class for states of Connect 4 game.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><dl class="simple">
+<dt>M (int): </dt><dd><p>number of rows in the board, defaults to <code class="docutils literal notranslate"><span class="pre">6</span></code>.</p>
+</dd>
+<dt>N (int): </dt><dd><p>number of columns in the board, defaults to <code class="docutils literal notranslate"><span class="pre">7</span></code>.</p>
+</dd>
+<dt>SYMBOLS (List):</dt><dd><p>list of strings representing disc symbols (black, white) or <code class="docutils literal notranslate"><span class="pre">&quot;.&quot;</span></code> for empty cell.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="c4.C4.M">
+<span class="sig-name descname"><span class="pre">M</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#c4.C4.M" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="c4.C4.N">
+<span class="sig-name descname"><span class="pre">N</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#c4.C4.N" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="c4.C4.SYMBOLS">
+<span class="sig-name descname"><span class="pre">SYMBOLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['○',</span> <span class="pre">'.',</span> <span class="pre">'●']</span></em><a class="headerlink" href="#c4.C4.SYMBOLS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.__init__" title="Link to this definition"></a></dt>
+<dd><p>Constructor (ordinary or copying) of <code class="docutils literal notranslate"><span class="pre">C4</span></code> instances - states of Connect 4 game.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>parent (State): </dt><dd><p>reference to parent state object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.class_repr">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_repr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.class_repr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.class_repr" title="Link to this definition"></a></dt>
+<dd><p>Returns a string representation of class <code class="docutils literal notranslate"><span class="pre">C4</span></code> (meant to instantiate states of Connect 4 game), informing about the size of board.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: string representation of class <code class="docutils literal notranslate"><span class="pre">C4</span></code> (meant to instantiate states of Connect 4 game), informing about the size of board.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.__str__" title="Link to this definition"></a></dt>
+<dd><p>Returns a string representation of this <code class="docutils literal notranslate"><span class="pre">C4</span></code> state - the contents of its game board.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: string representation of this <code class="docutils literal notranslate"><span class="pre">C4</span></code> state - the contents of its game board.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.take_action_job">
+<span class="sig-name descname"><span class="pre">take_action_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.take_action_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.take_action_job" title="Link to this definition"></a></dt>
+<dd><p>Drops a disc into column indicated by the action_index and returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the action is legal (column not full yet).
+Otherwise, does no changes and returns <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>action_index (int): </dt><dd><p>index of column where to drop a disc.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>action_legal (bool):</dt><dd><p>boolean flag indicating if the specified action was legal and performed.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.compute_outcome_job">
+<span class="sig-name descname"><span class="pre">compute_outcome_job</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.compute_outcome_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.compute_outcome_job" title="Link to this definition"></a></dt>
+<dd><p>Computes and returns the game outcome for this state in compliance with rules of Connect 4 game: 
+{-1, 1} denoting a win for the minimizing or maximizing player, respectively, if he connected at least 4 his discs; 
+0 denoting a tie, when the board is filled and no line of 4 exists;   
+<code class="docutils literal notranslate"><span class="pre">None</span></code> when the game is ongoing.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>outcome ({-1, 0, 1} or <code class="docutils literal notranslate"><span class="pre">None</span></code>)</dt><dd><p>game outcome for this state.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.compute_outcome_job_numba_jit">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_outcome_job_numba_jit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.compute_outcome_job_numba_jit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.compute_outcome_job_numba_jit" title="Link to this definition"></a></dt>
+<dd><p>Called by <code class="docutils literal notranslate"><span class="pre">compute_outcome_job</span></code> for faster outcomes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.take_random_action_playout">
+<span class="sig-name descname"><span class="pre">take_random_action_playout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.take_random_action_playout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.take_random_action_playout" title="Link to this definition"></a></dt>
+<dd><p>Picks a uniformly random action from actions available in this state and returns the result of calling <code class="docutils literal notranslate"><span class="pre">take_action</span></code> with the action index as argument.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>child (State): </dt><dd><p>result of <code class="docutils literal notranslate"><span class="pre">take_action</span></code> call for the random action.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.get_board">
+<span class="sig-name descname"><span class="pre">get_board</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.get_board"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.get_board" title="Link to this definition"></a></dt>
+<dd><p>Returns the board of this state (a two-dimensional array of bytes).</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>board (ndarray[np.int8, ndim=2]):</dt><dd><p>board of this state (a two-dimensional array of bytes).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.get_extra_info">
+<span class="sig-name descname"><span class="pre">get_extra_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.get_extra_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.get_extra_info" title="Link to this definition"></a></dt>
+<dd><p>Returns additional information associated with this state, as one-dimensional array of bytes,
+informing about fills of columns (how many discs have been dropped in each column).</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>extra_info (ndarray[np.int8, ndim=1] or <code class="docutils literal notranslate"><span class="pre">None</span></code>):</dt><dd><p>one-dimensional array with additional information associated with this state - fills of columns.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.action_name_to_index">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">action_name_to_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.action_name_to_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.action_name_to_index" title="Link to this definition"></a></dt>
+<dd><p>Returns an action’s index (numbering from 0) based on its name. E.g., name <code class="docutils literal notranslate"><span class="pre">&quot;0&quot;</span></code>, denoting a drop into the leftmost column, maps to index <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>action_name (str):</dt><dd><p>name of an action.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>action_index (int):</dt><dd><p>index corresponding to the given name.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.action_index_to_name">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">action_index_to_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.action_index_to_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.action_index_to_name" title="Link to this definition"></a></dt>
+<dd><p>Returns an action’s name based on its index (numbering from 0). E.g., index <code class="docutils literal notranslate"><span class="pre">0</span></code> maps to name <code class="docutils literal notranslate"><span class="pre">&quot;0&quot;</span></code>, denoting a drop into the leftmost column.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>action_index (int):</dt><dd><p>index of an action.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>action_name (str):</dt><dd><p>name corresponding to the given index.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.get_board_shape">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_board_shape</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.get_board_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.get_board_shape" title="Link to this definition"></a></dt>
+<dd><p>Returns a tuple with shape of boards for Connect 4 game.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>shape (tuple(int, int)):</dt><dd><p>shape of boards related to states of this class.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="c4.C4.__module__">
+<span class="sig-name descname"><span class="pre">__module__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'c4'</span></em><a class="headerlink" href="#c4.C4.__module__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.get_extra_info_memory">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_extra_info_memory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.get_extra_info_memory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.get_extra_info_memory" title="Link to this definition"></a></dt>
+<dd><p>Returns amount of memory (in bytes) needed to memorize additional information associated with Connect 4 states, i.e., the memory for fills of columns.
+That number is equal to the number of columns.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>extra_info_memory (int):</dt><dd><p>number of bytes required to memorize fills of columns.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="c4.C4.get_max_actions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_max_actions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/c4.html#C4.get_max_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#c4.C4.get_max_actions" title="Link to this definition"></a></dt>
+<dd><p>Returns the maximum number of actions (the largest branching factor) equal to the number of columns.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>max_actions (int):</dt><dd><p>maximum number of actions (the largest branching factor) equal to the number of columns.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="src" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="game_runner.html" class="btn btn-neutral float-right" title="game_runner module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Przemysław Klęsk.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
