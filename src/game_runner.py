@@ -75,14 +75,20 @@ class GameRunner:
                         print("WYGRANA:", game.compute_outcome())
                         I_now = game.extra_info[9]
                         J_now = game.extra_info[10]
+                        table_row = I_now
+                        table_column = J_now
 
                         if I_now == -1 and J_now == -1:
-                            print("RUCH W DOWOLNEJ PODTABLICY.")
+                            print("RUCH W DOWOLNEJ NIEZAJĘTEJ PODTABLICY.")
+                            table_row = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
+                            table_column = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
                         else:
                             print(f"RUCH W PODTABLICY: ({I_now}, {J_now})")
-                        row = int(input("RUCH WYKONUJE KRZYŻYK. PODAJ WIERSZ (0-8): "))
-                        column = int(input("RUCH WYKONUJE KRZYŻYK. PODAJ KOLUMNĘ (0-8): "))
-                        move_name = int(row * 9 + column)
+                        row = int(input("RUCH WYKONUJE KRZYŻYK. PODAJ WIERSZ (0-2): "))
+                        column = int(input("RUCH WYKONUJE KRZYŻYK. PODAJ KOLUMNĘ (0-2): "))
+                        move_row = row + (table_row * 3)
+                        move_column = column + (table_column * 3)
+                        move_name = int(move_row * 9 + move_column)
                         move_index = self.game_class.action_name_to_index(move_name)
                         game_moved = game.take_action(move_index)
                         if game_moved is not None:
@@ -124,14 +130,20 @@ class GameRunner:
                         print("WYGRANA:", game.compute_outcome())
                         I_now = game.extra_info[9]
                         J_now = game.extra_info[10]
+                        table_row = I_now
+                        table_column = J_now
 
                         if I_now == -1 and J_now == -1:
-                            print("RUCH W DOWOLNEJ PODTABLICY.")
+                            print("RUCH W DOWOLNEJ NIEZAJĘTEJ PODTABLICY.")
+                            table_row = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
+                            table_column = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
                         else:
                             print(f"RUCH W PODTABLICY: ({I_now}, {J_now})")
-                        row = int(input("RUCH WYKONUJE KÓŁKO. PODAJ WIERSZ (0-8): "))
-                        column = int(input("RUCH WYKONUJE KÓŁKO. PODAJ KOLUMNĘ (0-8): "))
-                        move_name = int(row * 9 + column)
+                        row = int(input("RUCH WYKONUJE KÓŁKO. PODAJ WIERSZ (0-2): "))
+                        column = int(input("RUCH WYKONUJE KÓŁKO. PODAJ KOLUMNĘ (0-2): "))
+                        move_row = row + (table_row * 3)
+                        move_column = column + (table_column * 3)
+                        move_name = int(move_row * 9 + move_column)
                         move_index = self.game_class.action_name_to_index(move_name)
                         game_moved = game.take_action(move_index)
                         if game_moved is not None:
