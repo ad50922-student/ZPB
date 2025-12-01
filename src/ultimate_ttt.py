@@ -168,6 +168,8 @@ class UTTT(State):
 
         if won != 0:
             child.extra_info[I * 3 + J] = won
+            winner = "KRZYŻYK" if won == 1 else "KÓŁKO"
+            print(f"PODTABLICA ({I},{J}) ZOSTAŁA WYGRANA PRZEZ: {winner}")
         elif np.all(sub_board != 0):
             child.extra_info[I * 3 + J] = -2  # pat
         else:
