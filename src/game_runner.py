@@ -79,9 +79,13 @@ class GameRunner:
                         table_column = J_now
 
                         if I_now == -1 and J_now == -1:
-                            print("RUCH W DOWOLNEJ NIEZAJĘTEJ PODTABLICY.")
-                            table_row = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
-                            table_column = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
+                            while True:
+                                print("RUCH W DOWOLNEJ NIEZAJĘTEJ PODTABLICY.")
+                                table_row = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
+                                table_column = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
+                                table_idx = table_row * 3 + table_column
+                                if game.get_extra_info()[table_idx] in (0, 2):
+                                    break
                         else:
                             print(f"RUCH W PODTABLICY: ({I_now}, {J_now})")
                         row = int(input("RUCH WYKONUJE KRZYŻYK. PODAJ WIERSZ (0-2): "))
@@ -134,9 +138,13 @@ class GameRunner:
                         table_column = J_now
 
                         if I_now == -1 and J_now == -1:
-                            print("RUCH W DOWOLNEJ NIEZAJĘTEJ PODTABLICY.")
-                            table_row = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
-                            table_column = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
+                            while True:
+                                print("RUCH W DOWOLNEJ NIEZAJĘTEJ PODTABLICY.")
+                                table_row = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
+                                table_column = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
+                                table_idx = table_row * 3 + table_column
+                                if game.get_extra_info()[table_idx] in (0, 2):
+                                    break
                         else:
                             print(f"RUCH W PODTABLICY: ({I_now}, {J_now})")
                         row = int(input("RUCH WYKONUJE KÓŁKO. PODAJ WIERSZ (0-2): "))
