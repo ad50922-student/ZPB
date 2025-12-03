@@ -32,8 +32,9 @@ class UTTT(State):
         else:
             self.board = np.zeros((UTTT.M, UTTT.N), dtype=np.int8)
             self.extra_info = np.zeros(UTTT.E, dtype=np.int8)
-            self.extra_info[9] = 1  # startowy ruch na środkowej podtablicy
-            self.extra_info[10] = 1  # startowy ruch na środkowej podtablicy
+            self.extra_info[:9] = -2
+            self.extra_info[9] = -1
+            self.extra_info[10] = -1
 
     @staticmethod
     def class_repr():
@@ -93,7 +94,7 @@ class UTTT(State):
         # Jeżeli nikt nie wygrał, zwracane jest 0
         return 0
 
-    def take_action(self, action_index):
+    def take_action_job(self, action_index):
         """
         Struktura danych board [9x9]:
 
@@ -113,16 +114,14 @@ class UTTT(State):
         Wektor jednowymiarowy extra_info (typ danych = byte) składa się z jedenastu elementów.
         Pierwsze 9 elementów (indeksy od 0 do 8) określają stan każdej z podtablic 3x3.
         Stany mogą być nastepujące:
-            0, jeżeli gra na tej podtablicy nie została jeszcze rozpoczęta (wszystkie elementy podtablicy = 0);
+            -2, jeżeli gra na tej podtablicy nie została jeszcze rozpoczęta (wszystkie elementy podtablicy = 0);
             1, jeżeli tą podtablicę wygrał krzyżyk (wtedy ta podtablica jest już wyłączona z dalszej gry);
             -1, jeżeli tą podtablicę wygrało kółko (wtedy ta podtablica jest już wyłączona z dalszej gry);
             2, jeżeli trwa gra na tej podtablicy (nikt nie wygrał, ale nie ma sytuacji patowej)
-            -2, jeżeli doszło do sytuacji patowej (wszystkie pozycje podtablicy są zajęte, ale nikt nie wygrał)
+            0, jeżeli doszło do sytuacji patowej (wszystkie pozycje podtablicy są zajęte, ale nikt nie wygrał)
 
         Ostatnie dwa elementy (indeksy 9 i 10) wskazują na indeksy podtablicy (I od 0 do 2, J od 0 do 2), na której
-        należy wykonać następny ruch. Po rozpoczęciu gry, te wartości automatycznie muszą przybrać wartości
-        I = 1 oraz J = 1, aby wskazywać na środkową podtablicę 3x3 (zawsze na niej należy wykonać pierwszy ruch).
-        W kolejnych turach, indeksy są  już obliczane na podstawie indeksów i, j tablicy 9x9 wskazujących na pozycję,
+        należy wykonać następny ruch. Indeksy I, J są obliczane na podstawie indeksów i, j tablicy 9x9 wskazujących na pozycję,
         na której został zagrany poprzedni ruch:
             I = i % 3;
             J = j % 3
@@ -142,7 +141,6 @@ class UTTT(State):
 
         # Sprawdzenie, czy pole jest wolne
         if self.board[i, j] != 0:
-            print(f"Niepoprawny ruch! Indeks ({i},{j}) jest już zajęty.")
             return None
 
         # Sprawdzenie, czy ruch jest zgodny z wyznaczoną podtablicą
@@ -151,47 +149,42 @@ class UTTT(State):
 
         if I_now != -1 and J_now != -1:
             table_now_state = self.extra_info[I_now * 3 + J_now]
-            if table_now_state in (0, 2):  # podtablica aktywna
+            if table_now_state in (-2, 2):  # podtablica aktywna
                 if I != I_now or J != J_now:
-                    print(f"Nieprawidłowy ruch! Ruch musi być wykonany w podtablicy ({I_now},{J_now}), a nie ({I},{J})")
-                    return None
-
-        # Tworzymy nowy obiekt stanu gry
-        child = UTTT(parent=self)
+                    return False
 
         # Wykonujemy ruch
-        child.board[i, j] = self.turn
+        self.board[i, j] = self.turn
 
         # Sprawdzamy zwycięzcę podtablicy
-        sub_board = child.board[I * 3:(I + 1) * 3, J * 3:(J + 1) * 3]
+        sub_board = self.board[I * 3:(I + 1) * 3, J * 3:(J + 1) * 3]
         won = self._check_subboard_winner(sub_board)
 
         if won != 0:
-            child.extra_info[I * 3 + J] = won
-            child.board[I * 3:(I + 1) * 3, J * 3:(J + 1) * 3] = won
+            self.extra_info[I * 3 + J] = won
+            self.board[I * 3:(I + 1) * 3, J * 3:(J + 1) * 3] = won
             winner = "KRZYŻYK" if won == 1 else "KÓŁKO"
-            print(f"PODTABLICA ({I},{J}) ZOSTAŁA WYGRANA PRZEZ: {winner}")
         elif np.all(sub_board != 0):
-            child.extra_info[I * 3 + J] = -2  # pat
+            self.extra_info[I * 3 + J] = 0  # pat
         else:
-            child.extra_info[I * 3 + J] = 2  # gra trwa
+            self.extra_info[I * 3 + J] = 2  # gra trwa
 
         # Wyznaczamy kolejną podtablicę
         I_next = i % 3
         J_next = j % 3
-        next_state = child.extra_info[I_next * 3 + J_next]
+        next_state = self.extra_info[I_next * 3 + J_next]
 
-        if next_state in (0, 2):
-            child.extra_info[9] = I_next
-            child.extra_info[10] = J_next
+        if next_state in (-2, 2):
+            self.extra_info[9] = I_next
+            self.extra_info[10] = J_next
         else:
-            child.extra_info[9] = -1
-            child.extra_info[10] = -1
+            self.extra_info[9] = -1
+            self.extra_info[10] = -1
 
         # Zmieniamy gracza
-        child.turn = -self.turn
+        self.turn = -self.turn
 
-        return child
+        return True
 
     def compute_outcome(self):
 
@@ -218,7 +211,7 @@ class UTTT(State):
         # Jeżeli nikt nie wygrał
         finished = True
         for s in M:
-            if s in (0, 2):  # Jeżeli jeszcze któraś z podtablic jest aktywna
+            if s in (-2, 2):  # Jeżeli jeszcze któraś z podtablic jest aktywna
                 finished = False # Gra trwa dalej
                 break
 
@@ -250,7 +243,7 @@ class UTTT(State):
 
         finished = True
         for s in M:
-            if s in (0, 2):
+            if s in (-2, 2):
                 finished = False
                 break
 
@@ -273,7 +266,7 @@ class UTTT(State):
             for I in range(3):
                 for J in range(3):
                     sub_index = I * 3 + J
-                    if child.extra_info[sub_index] in (0, 2):  # podtablica aktywna
+                    if child.extra_info[sub_index] in (-2, 2):  # podtablica aktywna
                         sub_board = child.board[I * 3:(I + 1) * 3, J * 3:(J + 1) * 3]
                         free_positions = np.argwhere(sub_board == 0)
                         for pos in free_positions:
@@ -293,7 +286,7 @@ class UTTT(State):
         # losowy wybór ruchu
         i, j = possible_moves[np.random.randint(len(possible_moves))]
         action_index = i * 9 + j
-        child.take_action(action_index)
+        child = self.take_action(action_index)
         return child
 
     def get_board(self):
@@ -377,4 +370,4 @@ class UTTT(State):
             max_actions (int):
                 maximum number of actions (the largest branching factor) equal to the number of columns.
         """
-        return UTTT.N
+        return UTTT.M * UTTT.N

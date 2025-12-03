@@ -137,7 +137,7 @@ class State:
         if action_index in self.children:            
             return self.children[action_index]
         child = type(self)(self) # copying constructor
-        action_legal = child.take_action_job(action_index) 
+        action_legal = child.take_action_job(action_index)
         if not action_legal:
             return None # no effect takes place
         child.last_action_index = action_index

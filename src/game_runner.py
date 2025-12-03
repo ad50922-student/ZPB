@@ -3,7 +3,27 @@ import numpy as np
 
 __version__ = "1.0.1"
 __author__ = "Przemysław Klęsk"
-__email__ = "pklesk@zut.edu.pl" 
+__email__ = "pklesk@zut.edu.pl"
+
+
+def print_if_subboard_won(game_old, game, action_index):
+    i = action_index // 9
+    j = action_index % 9
+    I = i // 3
+    J = j // 3
+    idx = I * 3 + J
+
+    old_val = game_old.extra_info[idx]
+    new_val = game.extra_info[idx]
+
+    if new_val != old_val:
+        if new_val == 1:
+            print(f"PODTABLICA ({I}, {J}) ZOSTAŁA WYGRANA PRZEZ KRZYŻYK.")
+        elif new_val == -1:
+            print(f"PODTABLICA ({I}, {J}) ZOSTAŁA WYGRANA PRZEZ KÓŁKO.")
+        elif new_val == 0:
+            print(f"PODTABLICA ({I}, {J}) ZAKOŃCZYŁA SIĘ REMISEM.")
+
 
 class GameRunner:
     """
@@ -54,7 +74,7 @@ class GameRunner:
         self.game_index = game_index
         self.n_games = n_games
         self.experiment_info_old = experiment_info_old
-        
+
     def run(self):
         """Carries out a game."""
         game = self.game_class()   
@@ -84,7 +104,7 @@ class GameRunner:
                                 table_row = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
                                 table_column = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
                                 table_idx = table_row * 3 + table_column
-                                if game.get_extra_info()[table_idx] in (0, 2):
+                                if game.get_extra_info()[table_idx] in (-2, 2):
                                     break
                         else:
                             print(f"RUCH W PODTABLICY: ({I_now}, {J_now})")
@@ -94,10 +114,14 @@ class GameRunner:
                         move_column = column + (table_column * 3)
                         move_name = int(move_row * 9 + move_column)
                         move_index = self.game_class.action_name_to_index(move_name)
+                        game_old = game
                         game_moved = game.take_action(move_index)
                         if game_moved is not None:
                             game = game_moved
-                            move_valid = True                                                        
+                            move_valid = True
+                            print_if_subboard_won(game_old, game_moved, move_index)
+                        else:
+                            print("NIEWŁAŚCIWY RUCH. SPRÓBUJ PONOWNIE.")
                     except:
                         print("INVALID MOVE. GAME STOPPED.")
                         escaped = True
@@ -113,7 +137,9 @@ class GameRunner:
                 move_index = self.black_ai.run(game, forced_search_steps_limit)
                 move_name = self.game_class.action_index_to_name(move_index)
                 print(f"MOVE PLAYED: {move_name}")
+                game_old = game
                 game = game.take_action(move_index)
+                print_if_subboard_won(game_old, game, move_index)
                 moves_round_info["black_best_action_info"] = self.black_ai.actions_info["best"]
                 moves_round_info["black_performance_info"] = self.black_ai.performance_info                
             print(str(game), flush=True)                                                
@@ -143,7 +169,7 @@ class GameRunner:
                                 table_row = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
                                 table_column = int(input("PODAJ WIERSZ PODTABLICY (0-2): "))
                                 table_idx = table_row * 3 + table_column
-                                if game.get_extra_info()[table_idx] in (0, 2):
+                                if game.get_extra_info()[table_idx] in (-2, 2):
                                     break
                         else:
                             print(f"RUCH W PODTABLICY: ({I_now}, {J_now})")
@@ -153,10 +179,14 @@ class GameRunner:
                         move_column = column + (table_column * 3)
                         move_name = int(move_row * 9 + move_column)
                         move_index = self.game_class.action_name_to_index(move_name)
+                        game_old = game
                         game_moved = game.take_action(move_index)
                         if game_moved is not None:
                             game = game_moved
-                            move_valid = True                            
+                            move_valid = True
+                            print_if_subboard_won(game_old, game_moved, move_index)
+                        else:
+                            print("NIEWŁAŚCIWY RUCH. SPRÓBUJ PONOWNIE.")
                     except:
                         print("INVALID MOVE. GAME STOPPED.")
                         escaped = True
@@ -172,7 +202,9 @@ class GameRunner:
                 move_index = self.white_ai.run(game, forced_search_steps_limit)
                 move_name = self.game_class.action_index_to_name(move_index)
                 print(f"MOVE PLAYED: {move_name}")
+                game_old = game
                 game = game.take_action(move_index)
+                print_if_subboard_won(game_old, game, move_index)
                 moves_round_info["white_best_action_info"] = self.white_ai.actions_info["best"]            
                 moves_round_info["white_performance_info"] = self.white_ai.performance_info                
             print(str(game), flush=True)                                        
